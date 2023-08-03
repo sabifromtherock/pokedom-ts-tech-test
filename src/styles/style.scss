@@ -47,3 +47,13 @@ body {
     }
   }
 }
+
+.input-form {
+  &__help {
+    display: none;
+  }
+
+  &__input-field:focus + &__help {
+    display: unset;
+  }
+}
