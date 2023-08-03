@@ -2,8 +2,11 @@ import "./styles/style.scss";
 import { pokemonArray } from "./data/pokemon";
 
 const cardContainer = document.querySelector<HTMLElement>(".card-container");
+const filterInput =
+  document.querySelector<HTMLInputElement>("#filter-pokemons");
 
-if (!cardContainer) throw new Error("Issue with card container selector");
+if (!cardContainer || !filterInput)
+  throw new Error("Issue with card container selector");
 
 const generatePokemonHTML = (pokemonArray: Pokemon[]): void => {
   cardContainer.innerHTML = pokemonArray
@@ -23,5 +26,23 @@ const generatePokemonHTML = (pokemonArray: Pokemon[]): void => {
     })
     .join("");
 };
+
+const handleFilter = (event: Event) => {
+  const userInput = (
+    event.currentTarget as HTMLInputElement
+  ).value.toLowerCase();
+
+  const filteredPokemons = pokemonArray.filter((pokemon) => {
+    return (
+      pokemon.name.includes(userInput) ||
+      pokemon.types.join("").includes(userInput) ||
+      pokemon.id === Number(userInput)
+    );
+  });
+
+  generatePokemonHTML(filteredPokemons);
+};
+
+filterInput.addEventListener("input", handleFilter);
 
 generatePokemonHTML(pokemonArray);
